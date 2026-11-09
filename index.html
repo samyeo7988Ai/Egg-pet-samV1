@@ -628,21 +628,13 @@ function gainExp(n){
 
  game.exp+=n;
 
- while(
-  game.exp>=game.level*50
- ){
+ while(game.exp>=game.level*50){
 
-  game.exp-=
-   game.level*50;
-
+  game.exp-=game.level*50;
   game.level++;
-
   game.coins+=50;
 
-  msg(
-   "🎉 玩家升级成功！获得50金币！"
-  );
-
+  msg("🎉 玩家升级成功！获得50金币！");
  }
 
  if(game.hatched){
@@ -658,25 +650,15 @@ function gainExp(n){
     game.growthLevel++;
 
     if(game.growthLevel===2){
-
      game.ageStage="成长期";
-
     }else{
-
      game.ageStage="成年";
-
     }
 
-    msg(
-     "🎉 宠物成长了！现在是："+game.ageStage
-    );
-
+    msg("🎉 宠物成长了！现在是："+game.ageStage);
    }
-
   }
-
  }
-
 }
  
 function feed(){
