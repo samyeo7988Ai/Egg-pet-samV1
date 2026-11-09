@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -6,8 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#211936">
 <title>SAM 宠物蛋 V1.2</title>
+
 <style>
-*{box-sizing:border-box}
+*{
+ box-sizing:border-box;
+}
+
 body{
  margin:0;
  background:linear-gradient(160deg,#55418c,#17152d);
@@ -16,9 +19,17 @@ body{
  min-height:100vh;
  padding:18px;
 }
-.app{max-width:450px;margin:auto;text-align:center}
-h1{font-size:25px}
-.version{color:#ffe6a6;font-size:13px}
+
+.app{
+ max-width:450px;
+ margin:auto;
+ text-align:center;
+}
+
+h1{
+ font-size:25px;
+}
+
 .card{
  background:#ffffff18;
  border:1px solid #ffffff25;
@@ -26,8 +37,20 @@ h1{font-size:25px}
  padding:20px;
  margin:15px 0;
 }
-.stats{display:flex;justify-content:space-around;gap:8px}
-.stat{background:#ffffff15;padding:12px;border-radius:15px;flex:1}
+
+.stats{
+ display:flex;
+ justify-content:space-around;
+ gap:8px;
+}
+
+.stat{
+ background:#ffffff15;
+ padding:12px;
+ border-radius:15px;
+ flex:1;
+}
+
 .egg{
  font-size:110px;
  margin:25px auto;
@@ -35,9 +58,13 @@ h1{font-size:25px}
  cursor:pointer;
  user-select:none;
 }
+
 @keyframes bounce{
- 50%{transform:translateY(-12px)}
+ 50%{
+  transform:translateY(-12px);
+ }
 }
+
 button{
  border:0;
  border-radius:14px;
@@ -47,139 +74,208 @@ button{
  color:white;
  font-size:15px;
  font-weight:bold;
- cursor:pointer;
 }
-button:active{transform:scale(.95)}
+
+button:active{
+ transform:scale(.95);
+}
+
 .progress{
  background:#ffffff25;
  height:13px;
  border-radius:20px;
  overflow:hidden;
- margin:12px 0
+ margin:12px 0;
 }
+
 .bar{
  height:100%;
  width:0%;
  background:#ffd36c;
- transition:width .3s
+ transition:width .3s;
 }
-.message{min-height:35px;color:#ffe6a6;margin-top:15px}
-.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.message{
+ min-height:35px;
+ color:#ffe6a6;
+ margin-top:15px;
+}
+
+.menu{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+}
+
 .pet-list{
  display:grid;
  grid-template-columns:1fr 1fr;
  gap:8px;
  margin-top:12px;
 }
+
 .pet-item{
  background:#ffffff15;
  border-radius:12px;
  padding:12px 5px;
 }
-.small{font-size:12px;color:#ddd}
+
+.small{
+ font-size:12px;
+ color:#ddd;
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
 
 <h1>🥚 SAM 宠物蛋</h1>
+
 <p>欢迎来到你的宠物世界！</p>
-<div class="version">SAM PET EGG V1.2</div>
+
+<p style="color:#ffe6a6;font-size:13px">
+SAM PET EGG V1.2
+</p>
 
 <div class="card">
- <div class="stats">
-  <div class="stat">🪙 金币<br><b id="coins">100</b></div>
-  <div class="stat">⭐ 等级<br><b id="level">1</b></div>
-  <div class="stat">❤️ 心情<br><b id="happy">100</b></div>
- </div>
+
+<div class="stats">
+
+<div class="stat">
+🪙 金币<br>
+<b id="coins">100</b>
 </div>
 
-<div class="card">
- <h3 id="title">神秘宠物蛋</h3>
- <div id="egg" class="egg" onclick="tapEgg()">🥚</div>
- <div id="status">等待孵化中……</div>
-
- <div class="progress">
-  <div class="bar" id="bar"></div>
- </div>
-
- <p id="percent">孵化进度：0%</p>
- if(game.hatched){
- const growthBox=document.getElementById("growthBox");
- const growthBar=document.getElementById("growthBar");
- const growthPercent=document.getElementById("growthPercent");
- const growthText=document.getElementById("growthText");
-
- growthBox.style.display="block";
-
- let stage="🌱 幼年";
-
- if(game.growthLevel>=2){
-  stage="🐣 成长中";
- }
-
- if(game.growthLevel>=3){
-  stage="🐾 成年";
- }
-
- growthText.textContent=
-  stage+" · 成长等级 "+game.growthLevel;
-
- growthBar.style.width=
-  game.growthExp+"%";
-
- growthPercent.textContent=
-  "成长进度："+game.growthExp+"%";
-}else{
- document.getElementById("growthBox").style.display="none";
-}
-
- <p id="growthPercent">成长进度：0%</p>
+<div class="stat">
+⭐ 等级<br>
+<b id="level">1</b>
 </div>
 
- <button id="newEggBtn" onclick="startNewEgg()" style="display:none">
-  🥚 孵化新蛋
- </button>
+<div class="stat">
+❤️ 心情<br>
+<b id="happy">100</b>
+</div>
 
- <div class="menu">
-  <button onclick="feed()">🍖 喂食</button>
-  <button onclick="play()">🎮 玩耍</button>
-  <button onclick="clean()">🛁 清洁</button>
-  <button onclick="reward()">🎁 每日奖励</button>
- </div>
+</div>
 
- <div class="message" id="message">
-  点击蛋开始你的冒险！
- </div>
 </div>
 
 <div class="card">
- <h3>🏪 宠物商店</h3>
- <button onclick="buyFood()">购买食物 20金币</button>
- <button onclick="buyToy()">购买玩具 30金币</button>
+
+<h3 id="title">神秘宠物蛋</h3>
+
+<div
+ id="egg"
+ class="egg"
+ onclick="tapEgg()">
+🥚
+</div>
+
+<div id="status">
+等待孵化中……
+</div>
+
+<div class="progress">
+<div
+ class="bar"
+ id="bar">
+</div>
+</div>
+
+<p id="percent">
+孵化进度：0%
+</p>
+
+<button
+ id="newEggBtn"
+ onclick="startNewEgg()"
+ style="display:none">
+
+🥚 孵化新蛋
+
+</button>
+
+<div class="menu">
+
+<button onclick="feed()">
+🍖 喂食
+</button>
+
+<button onclick="play()">
+🎮 玩耍
+</button>
+
+<button onclick="clean()">
+🛁 清洁
+</button>
+
+<button onclick="reward()">
+🎁 每日奖励
+</button>
+
+</div>
+
+<div
+ class="message"
+ id="message">
+
+点击蛋开始你的冒险！
+
+</div>
+
 </div>
 
 <div class="card">
- <h3>📖 我的宠物图鉴</h3>
- <p id="currentPet">目前还没有宠物</p>
- <div id="collection" class="pet-list"></div>
- <p class="small">继续孵化，可以收集更多不同宠物！</p>
+
+<h3>🏪 宠物商店</h3>
+
+<button onclick="buyFood()">
+购买食物 20金币
+</button>
+
+<button onclick="buyToy()">
+购买玩具 30金币
+</button>
+
 </div>
 
-<p class="version">SAM PET EGG V1.2 · 自动保存</p>
+<div class="card">
+
+<h3>📖 我的宠物图鉴</h3>
+
+<p id="currentPet">
+目前还没有宠物
+</p>
+
+<div
+ id="collection"
+ class="pet-list">
+</div>
+
+<p class="small">
+继续孵化，可以收集更多不同宠物！
+</p>
+
+</div>
+
+<p style="color:#aaa;font-size:12px">
+SAM PET EGG V1.2 · 自动保存
+</p>
+
 </div>
 
 <script>
+
 "use strict";
 
 const KEY="SAM_PET_EGG_V1";
 
-const defaultGame={
+let game={
  coins:100,
  level:1,
  exp:0,
-growthExp:0,
-growthLevel:1,
  happy:100,
  progress:0,
  hatched:false,
@@ -190,15 +286,43 @@ growthLevel:1,
  collection:[]
 };
 
-let game={...defaultGame};
-
 const pets=[
- {name:"小鸡",emoji:"🐣",rarity:"普通",weight:60},
- {name:"小狗",emoji:"🐶",rarity:"稀有",weight:15},
- {name:"小猫",emoji:"🐱",rarity:"稀有",weight:10},
- {name:"小兔",emoji:"🐰",rarity:"史诗",weight:8},
- {name:"小狐狸",emoji:"🦊",rarity:"史诗",weight:5},
- {name:"神秘龙",emoji:"🐲",rarity:"传说",weight:2}
+ {
+  name:"小鸡",
+  emoji:"🐣",
+  rarity:"普通",
+  weight:60
+ },
+ {
+  name:"小狗",
+  emoji:"🐶",
+  rarity:"稀有",
+  weight:15
+ },
+ {
+  name:"小猫",
+  emoji:"🐱",
+  rarity:"稀有",
+  weight:10
+ },
+ {
+  name:"小兔",
+  emoji:"🐰",
+  rarity:"史诗",
+  weight:8
+ },
+ {
+  name:"小狐狸",
+  emoji:"🦊",
+  rarity:"史诗",
+  weight:5
+ },
+ {
+  name:"神秘龙",
+  emoji:"🐲",
+  rarity:"传说",
+  weight:2
+ }
 ];
 
 function msg(t){
@@ -207,192 +331,201 @@ function msg(t){
 
 function save(){
  try{
-  localStorage.setItem(KEY,JSON.stringify(game));
- }catch(e){
-  msg("保存失败，请检查浏览器存储设置！");
- }
+  localStorage.setItem(
+   KEY,
+   JSON.stringify(game)
+  );
+ }catch(e){}
 }
 
 function load(){
+
  try{
-  const old=localStorage.getItem(KEY);
+
+  let old=
+   localStorage.getItem(KEY);
 
   if(old){
-   const data=JSON.parse(old);
 
-   if(data && typeof data==="object"){
-    game={...defaultGame,...data};
+   let data=
+    JSON.parse(old);
+
+   if(data &&
+      typeof data==="object"){
+
+    game={
+     ...game,
+     ...data
+    };
+
    }
-  }
- }catch(e){
-  game={...defaultGame};
- }
 
- game.coins=Math.max(0,Number(game.coins)||0);
- game.level=Math.max(1,Number(game.level)||1);
- game.exp=Math.max(0,Number(game.exp)||0);
- game.happy=Math.min(100,Math.max(0,Number(game.happy)||0));
- game.progress=Math.min(100,Math.max(0,Number(game.progress)||0));
+  }
+
+ }catch(e){}
 
  if(!Array.isArray(game.collection)){
   game.collection=[];
  }
 
- // 把旧版本已经孵化的宠物加入图鉴
- if(game.hatched && game.petName){
-  const exists=game.collection.some(
-   p=>p.name===game.petName && p.emoji===game.petEmoji
-  );
+ if(game.hatched &&
+    game.petName){
+
+  let exists=
+   game.collection.some(
+    p=>
+     p.name===game.petName &&
+     p.emoji===game.petEmoji
+   );
 
   if(!exists){
+
    game.collection.push({
     name:game.petName,
     emoji:game.petEmoji,
     rarity:game.rarity||"普通"
    });
+
   }
+
  }
 
- save();
  render();
 }
 
 function render(){
- document.getElementById("coins").textContent=game.coins;
- document.getElementById("level").textContent=game.level;
- document.getElementById("happy").textContent=game.happy;
 
- document.getElementById("bar").style.width=
+ document.getElementById("coins")
+ .textContent=game.coins;
+
+ document.getElementById("level")
+ .textContent=game.level;
+
+ document.getElementById("happy")
+ .textContent=game.happy;
+
+ document.getElementById("bar")
+ .style.width=
  game.progress+"%";
 
- document.getElementById("percent").textContent=
+ document.getElementById("percent")
+ .textContent=
  "孵化进度："+game.progress+"%";
- if(game.hatched){
- const growthBox=document.getElementById("growthBox");
- const growthBar=document.getElementById("growthBar");
- const growthPercent=document.getElementById("growthPercent");
- const growthText=document.getElementById("growthText");
-
- growthBox.style.display="block";
-
- let stage="🌱 幼年";
-
- if(game.growthLevel>=2){
-  stage="🐣 成长中";
- }
-
- if(game.growthLevel>=3){
-  stage="🐾 成年";
- }
-
- growthText.textContent=
-  stage+" · 成长等级 "+game.growthLevel;
-
- growthBar.style.width=
-  game.growthExp+"%";
-
- growthPercent.textContent=
-  "成长进度："+game.growthExp+"%";
-}else{
- document.getElementById("growthBox").style.display="none";
-}
-
- const egg=document.getElementById("egg");
- const newBtn=document.getElementById("newEggBtn");
 
  if(game.hatched){
-  egg.textContent=game.petEmoji;
-  document.getElementById("title").textContent=game.petName;
-  document.getElementById("status").textContent=
-   "稀有度："+game.rarity+" · 已经孵化成功";
 
-  document.getElementById("currentPet").textContent=
-   "当前宠物："+game.petEmoji+" "+game.petName+
-   "（"+game.rarity+"）";
+  document.getElementById("egg")
+  .textContent=game.petEmoji;
 
-  newBtn.style.display="inline-block";
+  document.getElementById("title")
+  .textContent=game.petName;
+
+  document.getElementById("status")
+  .textContent=
+   "稀有度："+game.rarity;
+
+  document.getElementById("currentPet")
+  .textContent=
+   "当前宠物："+
+   game.petEmoji+
+   " "+
+   game.petName+
+   "（"+
+   game.rarity+
+   "）";
+
+  document.getElementById("newEggBtn")
+  .style.display="inline-block";
+
  }else{
-  egg.textContent="🥚";
-  document.getElementById("title").textContent="神秘宠物蛋";
-  document.getElementById("status").textContent="等待孵化中……";
-  document.getElementById("currentPet").textContent=
+
+  document.getElementById("egg")
+  .textContent="🥚";
+
+  document.getElementById("title")
+  .textContent="神秘宠物蛋";
+
+  document.getElementById("status")
+  .textContent=
+   "等待孵化中……";
+
+  document.getElementById("currentPet")
+  .textContent=
    "目前正在孵化神秘蛋";
 
-  newBtn.style.display="none";
+  document.getElementById("newEggBtn")
+  .style.display="none";
+
  }
 
- const collection=document.getElementById("collection");
- collection.textContent="";
+ let collection=
+  document.getElementById("collection");
+
+ collection.innerHTML="";
 
  if(game.collection.length===0){
-  const p=document.createElement("p");
-  p.textContent="尚未收集宠物";
-  collection.appendChild(p);
+
+  collection.innerHTML=
+   "<p>尚未收集宠物</p>";
+
  }else{
-  game.collection.forEach(pet=>{
-   const item=document.createElement("div");
+
+  game.collection.forEach(function(pet){
+
+   let item=
+    document.createElement("div");
+
    item.className="pet-item";
+
    item.textContent=
-    pet.emoji+" "+pet.name+" · "+pet.rarity;
+    pet.emoji+
+    " "+
+    pet.name+
+    " · "+
+    pet.rarity;
+
    collection.appendChild(item);
+
   });
- }
-}
 
-function gainExp(n){
- game.exp+=n;
-
- while(game.exp>=game.level*50){
-  game.exp-=game.level*50;
-  game.level++;
-  game.coins+=50;
-  msg("🎉 玩家升级成功！获得50金币！");
  }
 
- if(game.hatched){
-  game.growthExp+=n;
-
-  while(game.growthExp>=100){
-   game.growthExp-=100;
-
-   if(game.growthLevel<3){
-    game.growthLevel++;
-    game.coins+=30;
-
-    msg(
-     "🐾 宠物成长了！现在是第 "+
-     game.growthLevel+" 阶段！获得30金币！"
-    );
-   }else{
-    game.growthExp=100;
-   }
-  }
- }
-}
-
- while(game.exp>=game.level*50){
-  game.exp-=game.level*50;
-  game.level++;
-  game.coins+=50;
-  msg("🎉 升级成功！获得50金币！");
- }
 }
 
 function tapEgg(){
+
  if(game.hatched){
-  game.happy=Math.min(100,game.happy+1);
+
+  game.happy=
+   Math.min(
+    100,
+    game.happy+1
+   );
+
   msg("🐾 宠物很开心！");
+
   save();
   render();
+
   return;
  }
 
- game.progress=Math.min(100,game.progress+2);
+ game.progress=
+  Math.min(
+   100,
+   game.progress+2
+  );
 
  if(game.progress>=100){
+
   hatchPet();
+
  }else{
-  msg("🥚 孵化进度增加2%！");
+
+  msg(
+   "🥚 孵化进度增加2%！"
+  );
+
  }
 
  save();
@@ -400,136 +533,273 @@ function tapEgg(){
 }
 
 function hatchPet(){
- let roll=Math.random()*100;
- let total=0;
- let selected=pets[0];
 
- for(const pet of pets){
+ let roll=
+  Math.random()*100;
+
+ let total=0;
+
+ let selected=
+  pets[0];
+
+ for(let pet of pets){
+
   total+=pet.weight;
 
   if(roll<total){
+
    selected=pet;
    break;
+
   }
+
  }
 
- game.petName=selected.name;
- game.petEmoji=selected.emoji;
- game.rarity=selected.rarity;
+ game.petName=
+  selected.name;
+
+ game.petEmoji=
+  selected.emoji;
+
+ game.rarity=
+  selected.rarity;
+
  game.hatched=true;
+
  game.progress=100;
+
  game.coins+=100;
+
  game.exp+=20;
 
- const exists=game.collection.some(
-  p=>p.name===selected.name && p.emoji===selected.emoji
- );
+ let exists=
+  game.collection.some(
+   p=>
+    p.name===selected.name &&
+    p.emoji===selected.emoji
+  );
 
  if(!exists){
+
   game.collection.push({
    name:selected.name,
    emoji:selected.emoji,
    rarity:selected.rarity
   });
+
  }
 
- msg("🎉 孵化成功！获得："+selected.name+
- "（"+selected.rarity+"）");
+ msg(
+  "🎉 孵化成功！获得："+
+  selected.name+
+  "（"+
+  selected.rarity+
+  "）"
+ );
+
 }
 
 function startNewEgg(){
- if(!game.hatched)return;
+
+ if(!game.hatched){
+  return;
+ }
 
  game.hatched=false;
  game.progress=0;
 
- msg("🥚 新宠物蛋已经准备好！继续点击孵化吧！");
+ msg(
+  "🥚 新宠物蛋已经准备好！"
+ );
+
  save();
  render();
+
+}
+
+function gainExp(n){
+
+ game.exp+=n;
+
+ while(
+  game.exp>=game.level*50
+ ){
+
+  game.exp-=
+   game.level*50;
+
+  game.level++;
+
+  game.coins+=50;
+
+  msg(
+   "🎉 升级成功！获得50金币！"
+  );
+
+ }
+
 }
 
 function feed(){
+
  if(game.coins<10){
+
   msg("金币不足！");
   return;
+
  }
 
  game.coins-=10;
- game.happy=Math.min(100,game.happy+10);
+
+ game.happy=
+  Math.min(
+   100,
+   game.happy+10
+  );
+
  gainExp(5);
+
  save();
  render();
+
  msg("🍖 喂食成功！");
+
 }
 
 function play(){
+
  if(game.coins<5){
+
   msg("金币不足！");
   return;
+
  }
 
  game.coins-=5;
- game.happy=Math.min(100,game.happy+8);
+
+ game.happy=
+  Math.min(
+   100,
+   game.happy+8
+  );
+
  gainExp(8);
+
  save();
  render();
+
  msg("🎮 玩耍成功！");
+
 }
 
 function clean(){
- game.happy=Math.min(100,game.happy+5);
+
+ game.happy=
+  Math.min(
+   100,
+   game.happy+5
+  );
+
  gainExp(3);
+
  save();
  render();
+
  msg("🛁 清洁完成！");
+
 }
 
 function reward(){
- const today=new Date().toLocaleDateString();
+
+ let today=
+  new Date()
+  .toLocaleDateString();
 
  if(game.lastReward===today){
-  msg("今天已经领取奖励！");
+
+  msg(
+   "今天已经领取奖励！"
+  );
+
   return;
+
  }
 
- game.lastReward=today;
+ game.lastReward=
+  today;
+
  game.coins+=50;
- game.happy=Math.min(100,game.happy+10);
+
+ game.happy=
+  Math.min(
+   100,
+   game.happy+10
+  );
 
  save();
  render();
- msg("🎁 获得50金币！");
+
+ msg(
+  "🎁 获得50金币！"
+ );
+
 }
 
 function buyFood(){
+
  if(game.coins<20){
+
   msg("金币不足！");
   return;
+
  }
 
  game.coins-=20;
- game.happy=Math.min(100,game.happy+20);
+
+ game.happy=
+  Math.min(
+   100,
+   game.happy+20
+  );
 
  save();
  render();
- msg("🍖 食物购买成功！");
+
+ msg(
+  "🍖 食物购买成功！"
+ );
+
 }
 
 function buyToy(){
+
  if(game.coins<30){
+
   msg("金币不足！");
   return;
+
  }
 
  game.coins-=30;
- game.happy=Math.min(100,game.happy+30);
+
+ game.happy=
+  Math.min(
+   100,
+   game.happy+30
+  );
 
  save();
  render();
- msg("🧸 玩具购买成功！");
+
+ msg(
+  "🧸 玩具购买成功！"
+ );
+
 }
 
 load();
+
 </script>
+
 </body>
 </html>
