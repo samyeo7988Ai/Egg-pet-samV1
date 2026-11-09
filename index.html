@@ -371,6 +371,22 @@ function load(){
   game.collection=[];
  }
 
+if(game.hatched){
+
+ if(!game.growthExp){
+  game.growthExp=0;
+ }
+
+ if(!game.growthLevel){
+  game.growthLevel=1;
+ }
+
+ if(!game.ageStage){
+  game.ageStage="幼年";
+ }
+
+}
+ 
  if(game.hatched &&
     game.petName){
 
