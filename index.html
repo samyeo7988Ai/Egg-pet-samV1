@@ -131,22 +131,43 @@ function msg(t){
 }
 
 function render(){
+
  document.getElementById("coins").textContent=game.coins;
  document.getElementById("level").textContent=game.level;
  document.getElementById("happy").textContent=game.happy;
- document.getElementById("bar").style.width=game.progress+"%";
- document.getElementById("percent").textContent="孵化进度："+game.progress+"%";
+
+ document.getElementById("bar").style.width=
+ game.progress+"%";
+
+ document.getElementById("percent").textContent=
+ "孵化进度："+game.progress+"%";
 
  if(game.hatched){
-  document.getElementById("egg").textContent="🐣";
-  document.getElementById("title").textContent="我的小宠物";
-  document.getElementById("status").textContent="孵化成功！";
-  document.getElementById("chicken").textContent="🐣 小鸡：已解锁";
+
+  document.getElementById("egg").textContent=
+  game.petEmoji;
+
+  document.getElementById("title").textContent=
+  game.petName;
+
+  document.getElementById("status").textContent=
+  "稀有度："+game.rarity;
+
+  document.getElementById("chicken").textContent=
+  game.petEmoji+" "+game.petName+"：已解锁";
+
  }else{
+
   document.getElementById("egg").textContent="🥚";
-  document.getElementById("title").textContent="神秘宠物蛋";
-  document.getElementById("status").textContent="等待孵化中……";
+
+  document.getElementById("title").textContent=
+  "神秘宠物蛋";
+
+  document.getElementById("status").textContent=
+  "等待孵化中……";
+
  }
+
 }
 
 function tapEgg(){
