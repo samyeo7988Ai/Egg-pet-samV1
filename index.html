@@ -695,6 +695,23 @@ function gainExp(n){
   );
 
 }
+
+ function dailyGrowth(){
+ if(!game.hatched)return;
+ game.growthExp=(game.growthExp||0)+10;
+ if(game.growthExp>=100){
+  game.growthExp-=100;
+  game.growthLevel=(game.growthLevel||1)+1;
+  if(game.growthLevel==2)game.ageStage="成长期";
+  if(game.growthLevel>=3){
+   game.growthLevel=3;
+   game.ageStage="成年";
+   game.growthExp=100;
+  }
+ }
+ save();
+ render();
+}
  
 function feed(){
 
