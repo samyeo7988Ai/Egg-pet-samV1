@@ -171,20 +171,60 @@ function render(){
 }
 
 function tapEgg(){
+
  if(game.hatched){
   game.happy=Math.min(100,game.happy+1);
   msg("🐣 宠物很开心！");
+  save();
+  render();
+  return;
+ }
+
+ game.progress=Math.min(100,game.progress+2);
+
+ if(game.progress>=100){
+  hatchPet();
  }else{
-  game.progress=Math.min(100,game.progress+2);
-  msg("🥚 孵化进度增加 2%！");
-  if(game.progress>=100){
-   game.hatched=true;
-   game.coins+=100;
-   game.exp+=20;
-   msg("🎉 恭喜！小鸡孵化成功！");
+  msg("🥚 孵化进度增加2%！");
+ }
+
+ save();
+ render();
+}
+
+function hatchPet(){
+
+ const pets=[
+  {name:"小鸡",emoji:"🐣",rarity:"普通",weight:60},
+  {name:"小狗",emoji:"🐶",rarity:"稀有",weight:15},
+  {name:"小猫",emoji:"🐱",rarity:"稀有",weight:10},
+  {name:"小兔",emoji:"🐰",rarity:"史诗",weight:8},
+  {name:"小狐狸",emoji:"🦊",rarity:"史诗",weight:5},
+  {name:"神秘龙",emoji:"🐲",rarity:"传说",weight:2}
+ ];
+
+ let roll=Math.random()*100;
+ let total=0;
+ let selected=pets[0];
+
+ for(let pet of pets){
+  total+=pet.weight;
+  if(roll<total){
+   selected=pet;
+   break;
   }
  }
- save();render();
+
+ game.petName=selected.name;
+ game.petEmoji=selected.emoji;
+ game.rarity=selected.rarity;
+ game.hatched=true;
+ game.progress=100;
+ game.coins+=100;
+ game.exp+=20;
+
+ msg("🎉 孵化成功！获得："+selected.name+
+ "（"+selected.rarity+"）");
 }
 
 function gainExp(n){
