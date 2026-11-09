@@ -626,39 +626,60 @@ function startNewEgg(){
 
 function gainExp(n){
 
- game.exp+=n;
+ function gainExp(n) {
 
- while(game.exp>=game.level*50){
+  // 1. 增加玩家经验
+  game.exp += n;
 
-  game.exp-=game.level*50;
-  game.level++;
-  game.coins+=50;
+  // 2. 检查玩家是否升级
+  while (game.exp >= game.level * 50) {
 
-  msg("🎉 玩家升级成功！获得50金币！");
- }
+    game.exp -= game.level * 50;
+    game.level += 1;
+    game.coins += 50;
 
- if(game.hatched){
-
-  game.growthExp+=n;
-
-  if(game.growthExp>=100){
-
-   game.growthExp=0;
-
-   if(game.growthLevel<3){
-
-    game.growthLevel++;
-
-    if(game.growthLevel===2){
-     game.ageStage="成长期";
-    }else{
-     game.ageStage="成年";
-    }
-
-    msg("🎉 宠物成长了！现在是："+game.ageStage);
-   }
+    msg("🎉 玩家升级成功！获得50金币！");
   }
- }
+
+  // 3. 检查宠物是否已经孵化
+  if (!game.hatched) {
+    return;
+  }
+
+  // 4. 增加宠物成长经验
+  game.growthExp =
+    (game.growthExp || 0) + n;
+
+  // 5. 检查宠物成长
+  if (game.growthExp < 100) {
+    return;
+  }
+
+  if ((game.growthLevel || 1) >= 3) {
+    game.growthExp = 100;
+    return;
+  }
+
+  // 6. 宠物进入下一个成长阶段
+  game.growthExp -= 100;
+  game.growthLevel =
+    (game.growthLevel || 1) + 1;
+
+  if (game.growthLevel === 2) {
+
+    game.ageStage = "成长期";
+
+  } else if (game.growthLevel === 3) {
+
+    game.ageStage = "成年";
+
+  }
+
+  msg(
+    "🎉 宠物成长成功！现在是：" +
+    game.ageStage
+  );
+
 }
  
 function feed(){
