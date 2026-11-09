@@ -285,6 +285,34 @@ function gainExp(n){
   game.exp-=game.level*50;
   game.level++;
   game.coins+=50;
+  msg("🎉 玩家升级成功！获得50金币！");
+ }
+
+ if(game.hatched){
+  game.growthExp+=n;
+
+  while(game.growthExp>=100){
+   game.growthExp-=100;
+
+   if(game.growthLevel<3){
+    game.growthLevel++;
+    game.coins+=30;
+
+    msg(
+     "🐾 宠物成长了！现在是第 "+
+     game.growthLevel+" 阶段！获得30金币！"
+    );
+   }else{
+    game.growthExp=100;
+   }
+  }
+ }
+}
+
+ while(game.exp>=game.level*50){
+  game.exp-=game.level*50;
+  game.level++;
+  game.coins+=50;
   msg("🎉 升级成功！获得50金币！");
  }
 }
