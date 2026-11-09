@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#211936">
+<title>SAM 宠物蛋 V1.0</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:linear-gradient(160deg,#55418c,#17152d);
+ color:white;font-family:Arial,sans-serif;
+ min-height:100vh;padding:18px;
+}
+.app{max-width:450px;margin:auto;text-align:center}
+h1{font-size:25px}
+.card{
+ background:#ffffff18;border:1px solid #ffffff25;
+ border-radius:25px;padding:20px;margin:15px 0;
+}
+.stats{display:flex;justify-content:space-around;gap:8px}
+.stat{background:#ffffff15;padding:12px;border-radius:15px;flex:1}
+.egg{
+ font-size:110px;margin:25px auto;
+ animation:bounce 2s infinite;
+ cursor:pointer;user-select:none;
+}
+@keyframes bounce{
+ 50%{transform:translateY(-12px)}
+}
+.pet{font-size:100px;margin:25px}
+button{
+ border:0;border-radius:14px;padding:13px 16px;
+ margin:5px;background:#9476ed;color:white;
+ font-size:15px;font-weight:bold;
+}
+button:active{transform:scale(.95)}
+.progress{
+ background:#ffffff25;height:13px;
+ border-radius:20px;overflow:hidden;margin:12px 0
+}
+.bar{height:100%;width:0%;background:#ffd36c}
+.message{min-height:35px;color:#ffe6a6;margin-top:15px}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>🥚 SAM 宠物蛋</h1>
+<p>欢迎来到你的宠物世界！</p>
+
+<div class="card">
+<div class="stats">
+<div class="stat">🪙 金币<br><b id="coins">100</b></div>
+<div class="stat">⭐ 等级<br><b id="level">1</b></div>
+<div class="stat">❤️ 心情<br><b id="happy">100</b></div>
+</div>
+</div>
+
+<div class="card">
+<h3 id="title">神秘宠物蛋</h3>
+<div id="egg" class="egg" onclick="tapEgg()">🥚</div>
+<div id="status">等待孵化中……</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<p id="percent">孵化进度：0%</p>
+<div class="menu">
+<button onclick="feed()">🍖 喂食</button>
+<button onclick="play()">🎮 玩耍</button>
+<button onclick="clean()">🛁 清洁</button>
+<button onclick="reward()">🎁 每日奖励</button>
+</div>
+<div class="message" id="message">点击蛋开始你的冒险！</div>
+</div>
+
+<div class="card">
+<h3>🏪 宠物商店</h3>
+<button onclick="buyFood()">购买食物 20金币</button>
+<button onclick="buyToy()">购买玩具 30金币</button>
+</div>
+
+<div class="card">
+<h3>📖 宠物图鉴</h3>
+<p>🥚 神秘蛋</p>
+<p id="chicken">🐣 小鸡：尚未孵化</p>
+<p>🐱 神秘猫咪：🔒</p>
+<p>🐲 神秘龙：🔒</p>
+</div>
+
+<p>SAM PET EGG V1.0</p>
+</div>
+
+<script>
+const KEY="SAM_PET_EGG_V1";
+let game={
+ coins:100,level:1,exp:0,
+ happy:100,progress:0,
+ hatched:false,lastReward:""
+};
+
+function load(){
+ try{
+  let old=localStorage.getItem(KEY);
+  if(old){
+   let data=JSON.parse(old);
+   if(data && typeof data==="object"){
+    game={...game,...data};
+   }
+  }
+ }catch(e){}
+ render();
+}
+
+function save(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(game));
+ }catch(e){
+  msg("无法保存，请检查浏览器存储设置");
+ }
+}
+
+function msg(t){
+ document.getElementById("message").textContent=t;
+}
+
+function render(){
+ document.getElementById("coins").textContent=game.coins;
+ document.getElementById("level").textContent=game.level;
+ document.getElementById("happy").textContent=game.happy;
+ document.getElementById("bar").style.width=game.progress+"%";
+ document.getElementById("percent").textContent="孵化进度："+game.progress+"%";
+
+ if(game.hatched){
+  document.getElementById("egg").textContent="🐣";
+  document.getElementById("title").textContent="我的小宠物";
+  document.getElementById("status").textContent="孵化成功！";
+  document.getElementById("chicken").textContent="🐣 小鸡：已解锁";
+ }else{
+  document.getElementById("egg").textContent="🥚";
+  document.getElementById("title").textContent="神秘宠物蛋";
+  document.getElementById("status").textContent="等待孵化中……";
+ }
+}
+
+function tapEgg(){
+ if(game.hatched){
+  game.happy=Math.min(100,game.happy+1);
+  msg("🐣 宠物很开心！");
+ }else{
+  game.progress=Math.min(100,game.progress+2);
+  msg("🥚 孵化进度增加 2%！");
+  if(game.progress>=100){
+   game.hatched=true;
+   game.coins+=100;
+   game.exp+=20;
+   msg("🎉 恭喜！小鸡孵化成功！");
+  }
+ }
+ save();render();
+}
+
+function gainExp(n){
+ game.exp+=n;
+ while(game.exp>=game.level*50){
+  game.exp-=game.level*50;
+  game.level++;
+  game.coins+=50;
+  msg("🎉 升级成功！获得50金币！");
+ }
+}
+
+function feed(){
+ if(game.coins<10)return msg("金币不足！");
+ game.coins-=10;
+ game.happy=Math.min(100,game.happy+10);
+ gainExp(5);save();render();
+ msg("🍖 喂食成功！");
+}
+
+function play(){
+ if(game.coins<5)return msg("金币不足！");
+ game.coins-=5;
+ game.happy=Math.min(100,game.happy+8);
+ gainExp(8);save();render();
+ msg("🎮 玩耍成功！");
+}
+
+function clean(){
+ game.happy=Math.min(100,game.happy+5);
+ gainExp(3);save();render();
+ msg("🛁 清洁完成！");
+}
+
+function reward(){
+ let today=new Date().toLocaleDateString();
+ if(game.lastReward===today)return msg("今天已经领取奖励！");
+ game.lastReward=today;
+ game.coins+=50;
+ game.happy=Math.min(100,game.happy+10);
+ save();render();
+ msg("🎁 获得50金币！");
+}
+
+function buyFood(){
+ if(game.coins<20)return msg("金币不足！");
+ game.coins-=20;
+ game.happy=Math.min(100,game.happy+20);
+ save();render();msg("🍖 食物购买成功！");
+}
+
+function buyToy(){
+ if(game.coins<30)return msg("金币不足！");
+ game.coins-=30;
+ game.happy=Math.min(100,game.happy+30);
+ save();render();msg("🧸 玩具购买成功！");
+}
+
+load();
+</script>
+</body>
+</html>
